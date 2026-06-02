@@ -36,7 +36,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BidTooLowException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleIllegalArgument(BidTooLowException ex, HttpServletRequest request) {
+    public ApiError handleBadRequest(BidTooLowException ex, HttpServletRequest request) {
+        return error(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(OwnAuctionException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleOwnAuction(OwnAuctionException ex, HttpServletRequest request) {
+        return error(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleResourceNotFound(ResourceNotFoundException ex, HttpServletRequest request) {
         return error(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
