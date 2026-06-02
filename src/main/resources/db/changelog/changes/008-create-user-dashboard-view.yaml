@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: 010-create-user-dashboard-view
+      author: janos
+      changes:
+        - sql:
+            sql: |
+              DROP TABLE IF EXISTS user_dashboard_view;
+
+              CREATE VIEW user_dashboard_view AS
+              SELECT
+                  u.id,
+                  u.username,
+                  u.avatar_url,
+
+                  (
+                      SELECT COUNT(*)
+                      FROM auctions a
+                      WHERE a.seller_id = u.id
+                        AND a.end_date_time <= CURRENT_TIMESTAMP
+                  ) AS finished_auctions,
+
+                  (
+                      SELECT COUNT(*)
+                      FROM auctions a
+                      WHERE a.seller_id = u.id
+                        AND a.start_date_time <= CURRENT_TIMESTAMP
+                        AND a.end_date_time > CURRENT_TIMESTAMP
+                  ) AS active_listings,
+
+                  COALESCE((
+                      SELECT SUM(a.current_price_huf)
+                      FROM auctions a
+                      WHERE a.seller_id = u.id
+                        AND a.end_date_time <= CURRENT_TIMESTAMP
+                  ), 0) AS earnings,
+
+                  COALESCE((
+                      SELECT SUM(a.current_price_huf)
+                      FROM auctions a
+                      WHERE a.bidder_id = u.id
+                        AND a.end_date_time <= CURRENT_TIMESTAMP
+                  ), 0) AS spent
+
+              FROM users u;

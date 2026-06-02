@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-items-table
+      author: janos
+      changes:
+        - createTable:
+            tableName: ITEMS
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+              - column:
+                  name: image_url
+                  type: VARCHAR(1000)
+              - column:
+                  name: quantity
+                  type: INTEGER
+              - column:
+                  name: category
+                  type: VARCHAR(50)
+              - column:
+                  name: item_status
+                  type: SMALLINT
+
+        - createIndex:
+            tableName: ITEMS
+            indexName: idx_items_category
+            columns:
+              - column:
+                  name: category
+
+        - createIndex:
+            tableName: ITEMS
+            indexName: idx_items_item_status
+            columns:
+              - column:
+                  name: item_status

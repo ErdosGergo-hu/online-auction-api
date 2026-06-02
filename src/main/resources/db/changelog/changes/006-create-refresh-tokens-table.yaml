@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-create-refresh-tokens-table
+      author: janos
+      changes:
+        - createTable:
+            tableName: REFRESH_TOKENS
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: token
+                  type: VARCHAR(1000)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: expires_at
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: REFRESH_TOKENS
+            baseColumnNames: user_id
+            referencedTableName: USERS
+            referencedColumnNames: id
+            constraintName: fk_refresh_token_user
+
+        - createIndex:
+            tableName: REFRESH_TOKENS
+            indexName: idx_refresh_token_token
+            columns:
+              - column:
+                  name: token
+
+        - createIndex:
+            tableName: REFRESH_TOKENS
+            indexName: idx_refresh_token_expires_at
+            columns:
+              - column:
+                  name: expires_at
