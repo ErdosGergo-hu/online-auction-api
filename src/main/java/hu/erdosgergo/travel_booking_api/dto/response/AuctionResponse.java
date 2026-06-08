@@ -14,6 +14,9 @@ public class AuctionResponse {
     LocalDateTime startDateTime;
     LocalDateTime endDateTime;
     int bidCount;
+    UserResponse seller;
+    UserResponse bidder;
+    boolean isFavorite;
 }
 
 

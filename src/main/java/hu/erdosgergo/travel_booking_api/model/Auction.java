@@ -32,4 +32,12 @@ public class Auction {
     private LocalDateTime startDateTime;
 
     private LocalDateTime endDateTime;
+
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private User seller;
+
+    @ManyToOne
+    @JoinColumn(name = "bidder_id")
+    private User bidder;
 }
