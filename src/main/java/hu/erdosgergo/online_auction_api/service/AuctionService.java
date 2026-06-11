@@ -1,12 +1,15 @@
 package hu.erdosgergo.online_auction_api.service;
 
+import hu.erdosgergo.online_auction_api.dto.request.AuctionCreateRequest;
 import hu.erdosgergo.online_auction_api.dto.request.CreateBidRequest;
 import hu.erdosgergo.online_auction_api.dto.response.AuctionResponse;
 import hu.erdosgergo.online_auction_api.exception.BidTooLowException;
 import hu.erdosgergo.online_auction_api.exception.OwnAuctionException;
 import hu.erdosgergo.online_auction_api.mapper.AuctionMapper;
 import hu.erdosgergo.online_auction_api.model.Favorite;
+import hu.erdosgergo.online_auction_api.model.Item;
 import hu.erdosgergo.online_auction_api.repository.FavoriteRepository;
+import hu.erdosgergo.online_auction_api.repository.ItemRepository;
 import hu.erdosgergo.online_auction_api.search.criteria.AuctionSearchCriteria;
 import hu.erdosgergo.online_auction_api.model.Auction;
 import hu.erdosgergo.online_auction_api.repository.AuctionRepository;
@@ -22,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -41,6 +45,8 @@ public class AuctionService {
     private final UserService userService;
 
     private final FavoriteRepository favoriteRepository;
+
+    private final ItemRepository itemRepository;
 
     public AuctionResponse getResponseById(Long id) {
         Auction auction = getAuctionById(id);
@@ -120,6 +126,30 @@ public class AuctionService {
         List<Favorite> favorites = favoriteRepository.findAllByUserId(currentUserId);
         List<Auction> favoriteAuctions = favorites.stream().map(Favorite::getAuction).toList();
         return mapper.toResponseList(favoriteAuctions);
+    }
+
+    @Transactional
+    public AuctionResponse createAuction(AuctionCreateRequest auctionCreateRequest) {
+        Item item = new Item();
+        item.setCategory(auctionCreateRequest.category());
+        item.setName(auctionCreateRequest.name());
+        item.setDescription(auctionCreateRequest.description());
+        item.setQuantity(auctionCreateRequest.quantity());
+        item.setImageUrl(auctionCreateRequest.imageUrl());
+
+        Item savedItem = itemRepository.save(item);
+
+        Auction auction = new Auction();
+        auction.setItem(savedItem);
+        auction.setStartingPriceHuf(auctionCreateRequest.startingPriceHuf());
+        auction.setCurrentPriceHuf(auctionCreateRequest.startingPriceHuf());
+        auction.setStartDateTime(LocalDateTime.now());
+        auction.setEndDateTime(auctionCreateRequest.endDateTime());
+        auction.setSeller(userService.getCurrentUser());
+
+        Auction savedAuction = repository.save(auction);
+
+        return mapper.toResponse(savedAuction);
     }
 
 }

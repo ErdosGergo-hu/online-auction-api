@@ -183,6 +183,13 @@ databaseChangeLog:
               - column: { name: image_url, value: "yoga-mat" }
               - column: { name: category, value: "ACCESSORY" }
 
+        - sql:
+            sql: |
+              SELECT setval(
+                pg_get_serial_sequence('items', 'id'),
+                COALESCE((SELECT MAX(id) FROM items), 1)
+              );
+
   - changeSet:
       id: 007-seed-users
       author: janos

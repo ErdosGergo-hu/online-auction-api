@@ -1,5 +1,6 @@
 package hu.erdosgergo.online_auction_api.controller;
 
+import hu.erdosgergo.online_auction_api.dto.request.AuctionCreateRequest;
 import hu.erdosgergo.online_auction_api.dto.request.CreateBidRequest;
 import hu.erdosgergo.online_auction_api.dto.response.AuctionResponse;
 import hu.erdosgergo.online_auction_api.search.criteria.AuctionSearchCriteria;
@@ -51,5 +52,10 @@ public class AuctionResource {
     @GetMapping("/me/favorites")
     public List<AuctionResponse> findFavoriteAuctionsByCurrentUser() {
         return auctionService.findFavoriteAuctionsByCurrentUser();
+    }
+
+    @PostMapping("/create")
+    public AuctionResponse createAuction(@RequestBody @Valid AuctionCreateRequest auctionCreateRequest) {
+        return auctionService.createAuction(auctionCreateRequest);
     }
 }
