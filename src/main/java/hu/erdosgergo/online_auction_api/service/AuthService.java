@@ -47,6 +47,7 @@ public class AuthService {
                 .email(request.email())
                 .username(request.username())
                 .password(passwordEncoder.encode(request.password()))
+                .avatarUrl(request.avatarUrl())
                 .createdAt(Instant.now())
                 .build();
 

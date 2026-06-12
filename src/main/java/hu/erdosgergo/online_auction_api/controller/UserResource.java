@@ -1,8 +1,11 @@
 package hu.erdosgergo.online_auction_api.controller;
 
+import hu.erdosgergo.online_auction_api.dto.request.UserUpdateRequest;
+import hu.erdosgergo.online_auction_api.dto.response.UserResponse;
 import hu.erdosgergo.online_auction_api.service.UserDashboardViewService;
 import hu.erdosgergo.online_auction_api.service.UserService;
 import hu.erdosgergo.online_auction_api.view.UserDashboardView;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +23,11 @@ public class UserResource {
     @GetMapping("/dashboard")
     public List<UserDashboardView> getDashboardUsers() {
         return userDashboardViewService.findAll();
+    }
+
+    @PutMapping
+    public UserResponse updateUser(@RequestBody @Valid UserUpdateRequest userUpdateRequest) {
+        return userService.updateUser(userUpdateRequest);
     }
 
     @GetMapping("/profile/{userId}")
