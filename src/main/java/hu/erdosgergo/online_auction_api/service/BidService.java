@@ -4,6 +4,7 @@ import hu.erdosgergo.online_auction_api.dto.response.BidResponse;
 import hu.erdosgergo.online_auction_api.mapper.BidMapper;
 import hu.erdosgergo.online_auction_api.model.Auction;
 import hu.erdosgergo.online_auction_api.model.Bid;
+import hu.erdosgergo.online_auction_api.model.User;
 import hu.erdosgergo.online_auction_api.repository.BidRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,15 +19,14 @@ public class BidService {
 
     private final BidRepository repository;
     private final BidMapper mapper;
-    private final UserService userService;
 
     @Transactional
-    public void createBidByAuction(Auction auction) {
+    public void createBidByAuction(Auction auction, User bidder) {
         Bid bid = new Bid();
         bid.setAuction(auction);
         bid.setCreatedAt(LocalDateTime.now());
         bid.setAmountHuf(auction.getCurrentPriceHuf());
-        bid.setBidder(userService.getCurrentUser());
+        bid.setBidder(bidder);
         repository.save(bid);
     }
 

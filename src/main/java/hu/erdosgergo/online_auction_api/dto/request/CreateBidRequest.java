@@ -5,6 +5,5 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record CreateBidRequest(
-        @NotNull BigDecimal newPrice,
-        @NotNull Long userId
+        @NotNull BigDecimal newPrice
 ) {}

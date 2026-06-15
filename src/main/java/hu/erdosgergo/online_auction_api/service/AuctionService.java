@@ -5,9 +5,12 @@ import hu.erdosgergo.online_auction_api.dto.request.CreateBidRequest;
 import hu.erdosgergo.online_auction_api.dto.response.AuctionResponse;
 import hu.erdosgergo.online_auction_api.exception.BidTooLowException;
 import hu.erdosgergo.online_auction_api.exception.OwnAuctionException;
+import hu.erdosgergo.online_auction_api.exception.ResourceNotFoundException;
 import hu.erdosgergo.online_auction_api.mapper.AuctionMapper;
+import hu.erdosgergo.online_auction_api.messages.NotificationMessages;
 import hu.erdosgergo.online_auction_api.model.Favorite;
 import hu.erdosgergo.online_auction_api.model.Item;
+import hu.erdosgergo.online_auction_api.model.User;
 import hu.erdosgergo.online_auction_api.repository.FavoriteRepository;
 import hu.erdosgergo.online_auction_api.repository.ItemRepository;
 import hu.erdosgergo.online_auction_api.search.criteria.AuctionSearchCriteria;
@@ -27,6 +30,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Slf4j
@@ -48,6 +52,8 @@ public class AuctionService {
 
     private final ItemRepository itemRepository;
 
+    private final NotificationService notificationService;
+
     public AuctionResponse getResponseById(Long id) {
         Auction auction = getAuctionById(id);
         return getResponseByAuction(auction);
@@ -67,23 +73,47 @@ public class AuctionService {
 
     @Transactional
     public Auction updateAuctionByPrice(Long id, CreateBidRequest request) {
+        User bidder = userService.getCurrentUser();
         BigDecimal newPrice = request.newPrice();
-        Long userId = request.userId();
-        Auction auction = repository.findById(id).orElseThrow();
+        Auction auction = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Auction is not found with an id: " + id));
 
-        if(auction.getSeller().getId().equals(userId)) {
+        validateBid(auction, bidder, newPrice);
+
+        User previousBidder = auction.getBidder();
+        auction.setBidder(bidder);
+        auction.setCurrentPriceHuf(newPrice);
+
+        notifyUsers(auction, previousBidder);
+
+        bidService.createBidByAuction(auction, bidder);
+        return repository.save(auction);
+    }
+
+    private void validateBid(Auction auction, User bidder, BigDecimal newPrice) {
+        if(auction.getSeller().getId().equals(bidder.getId())) {
             throw new OwnAuctionException();
         }
 
         if(auction.getCurrentPriceHuf().compareTo(newPrice) >= 0) {
             throw new BidTooLowException(auction.getCurrentPriceHuf().setScale(0, RoundingMode.DOWN), newPrice);
         }
+    }
 
-        auction.setCurrentPriceHuf(newPrice);
-        auction.setBidder(userService.getUserById(userId));
+    private void notifyUsers(Auction auction, User previousBidder) {
+        if(previousBidder != null && Objects.equals(previousBidder.getId(), auction.getBidder().getId())) {
+            notificationService.create(
+                previousBidder,
+                NotificationMessages.OUTBID.formatted(
+                        auction.getItem().getName(),
+                        auction.getBidder().getUsername()));
+        }
 
-        bidService.createBidByAuction(auction);
-        return repository.save(auction);
+        notificationService.create(
+                auction.getSeller(),
+                NotificationMessages.NEW_BID.formatted(
+                        auction.getItem().getName()
+                )
+        );
     }
 
     public AuctionResponse updateAuctionByRequest(Long id, CreateBidRequest request) {
