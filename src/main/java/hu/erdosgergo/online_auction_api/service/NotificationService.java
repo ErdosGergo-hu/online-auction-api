@@ -2,12 +2,12 @@ package hu.erdosgergo.online_auction_api.service;
 
 import hu.erdosgergo.online_auction_api.dto.response.NotificationResponse;
 import hu.erdosgergo.online_auction_api.mapper.NotificationMapper;
-import hu.erdosgergo.online_auction_api.model.Auction;
 import hu.erdosgergo.online_auction_api.model.Notification;
 import hu.erdosgergo.online_auction_api.model.User;
 import hu.erdosgergo.online_auction_api.repository.NotificationRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +25,8 @@ public class NotificationService {
 
     private final NotificationMapper notificationMapper;
 
+    private final SimpMessagingTemplate messagingTemplate;
+
     public void create(User previousBidder, String message) {
         Notification notification = Notification.builder()
                 .user(previousBidder)
@@ -33,7 +35,14 @@ public class NotificationService {
                 .createdAt(Instant.now())
                 .build();
 
-        repository.save(notification);
+        Notification saved = repository.save(notification);
+
+        NotificationResponse response = notificationMapper.toResponse(saved);
+
+        messagingTemplate.convertAndSend(
+                "/topic/notifications/" + previousBidder.getId(),
+                response
+        );
     }
 
     @Transactional(readOnly = true)
@@ -63,7 +72,7 @@ public class NotificationService {
     public List<NotificationResponse> getMyNotifications() {
         User currentUser = userService.getCurrentUser();
         return repository
-                .findByUserIdOrderByCreatedAtDesc(currentUser.getId())
+                .findTop10ByUserIdOrderByCreatedAtDesc(currentUser.getId())
                 .stream()
                 .map(notificationMapper::toResponse)
                 .toList();

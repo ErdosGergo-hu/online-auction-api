@@ -100,7 +100,7 @@ public class AuctionService {
     }
 
     private void notifyUsers(Auction auction, User previousBidder) {
-        if(previousBidder != null && Objects.equals(previousBidder.getId(), auction.getBidder().getId())) {
+        if(previousBidder != null && !Objects.equals(previousBidder.getId(), auction.getBidder().getId())) {
             notificationService.create(
                 previousBidder,
                 NotificationMessages.OUTBID.formatted(
