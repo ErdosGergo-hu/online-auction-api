@@ -46,6 +46,9 @@ databaseChangeLog:
               - column:
                   name: bidder_id
                   type: BIGINT
+              - column:
+                  name: status
+                  type: VARCHAR(50)
 
         - addForeignKeyConstraint:
             baseTableName: AUCTIONS

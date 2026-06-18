@@ -1,5 +1,6 @@
 package hu.erdosgergo.online_auction_api.model;
 
+import hu.erdosgergo.online_auction_api.enums.AuctionStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,4 +41,8 @@ public class Auction {
     @ManyToOne
     @JoinColumn(name = "bidder_id")
     private User bidder;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AuctionStatus status;
 }

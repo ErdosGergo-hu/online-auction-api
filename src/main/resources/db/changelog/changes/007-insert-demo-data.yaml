@@ -294,23 +294,23 @@ databaseChangeLog:
       changes:
         - sql:
             sql: |
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (1, 1, '2026-04-17T10:00:00', '2026-10-06T20:00:00', 10000, 10000, 1);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (2, 2, '2026-04-17T12:00:00', '2026-11-20T20:00:00', 10000, 10000, 1);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (3, 3, '2026-04-17T11:00:00', '2026-10-08T12:00:00', 10000, 10000, 2);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (4, 4, '2026-05-17T16:00:00', '2026-05-20T13:00:00', 10000, 10000, 1);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (5, 5, '2026-04-17T18:00:00', '2026-12-06T17:00:00', 10000, 10000, 2);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (6, 6, '2026-04-17T10:00:00', '2027-09-20T22:00:00', 10000, 10000, 1);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (7, 7, '2026-04-17T18:00:00', '2026-08-20T20:00:00', 10000, 10000, 4);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (21, 21, '2026-04-17T10:00:00', '2027-05-20T18:00:00', 10000, 10000, 1);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (22, 22, '2026-04-17T12:00:00', '2026-10-20T20:00:00', 10000, 10000, 3);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (23, 23, '2026-04-17T11:00:00', '2026-10-20T12:00:00', 10000, 10000, 3);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (24, 24, '2026-04-17T16:00:00', '2028-05-20T13:00:00', 10000, 10000, 4);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (25, 25, '2026-04-17T18:00:00', '2026-10-20T18:00:00', 10000, 10000, 2);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (26, 26, '2026-04-17T10:00:00', '2026-04-20T22:00:00', 10000, 10000, 1);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (27, 27, '2026-04-17T18:00:00', '2026-10-20T20:00:00', 10000, 10000, 4);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (28, 28, '2026-04-17T18:00:00', '2026-12-20T20:00:00', 10000, 10000, 1);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (29, 29, '2026-04-17T18:00:00', '2026-12-20T20:00:00', 10000, 10000, 2);
-              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, seller_id) VALUES (30, 30, '2026-04-17T18:00:00', '2026-12-20T20:00:00', 10000, 10000, 3);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (1, 1, '2026-04-17T10:00:00', '2026-10-06T20:00:00', 10000, 10000, 'ACTIVE', 1);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (2, 2, '2026-04-17T12:00:00', '2026-11-20T20:00:00', 10000, 10000, 'ACTIVE', 1);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (3, 3, '2026-04-17T11:00:00', '2026-10-08T12:00:00', 10000, 10000, 'ACTIVE', 2);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (4, 4, '2026-05-17T16:00:00', '2026-05-20T13:00:00', 10000, 10000, 'ACTIVE', 1);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (5, 5, '2026-04-17T18:00:00', '2026-12-06T17:00:00', 10000, 10000, 'ACTIVE', 2);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (6, 6, '2026-04-17T10:00:00', '2027-09-20T22:00:00', 10000, 10000, 'ACTIVE', 1);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (7, 7, '2026-04-17T18:00:00', '2026-08-20T20:00:00', 10000, 10000, 'ACTIVE', 4);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (21, 21, '2026-04-17T10:00:00', '2027-05-20T18:00:00', 10000, 10000, 'ACTIVE', 1);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (22, 22, '2026-04-17T12:00:00', '2026-10-20T20:00:00', 10000, 10000, 'ACTIVE', 3);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (23, 23, '2026-04-17T11:00:00', '2026-10-20T12:00:00', 10000, 10000, 'ACTIVE', 3);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (24, 24, '2026-04-17T16:00:00', '2028-05-20T13:00:00', 10000, 10000, 'ACTIVE', 4);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (25, 25, '2026-04-17T18:00:00', '2026-10-20T18:00:00', 10000, 10000, 'ACTIVE', 2);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (26, 26, '2026-04-17T10:00:00', '2026-04-20T22:00:00', 10000, 10000, 'ACTIVE', 1);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (27, 27, '2026-04-17T18:00:00', '2026-10-20T20:00:00', 10000, 10000, 'ACTIVE', 4);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (28, 28, '2026-04-17T18:00:00', '2026-12-20T20:00:00', 10000, 10000, 'ACTIVE', 1);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (29, 29, '2026-04-17T18:00:00', '2026-12-20T20:00:00', 10000, 10000, 'ACTIVE', 2);
+              INSERT INTO auctions (id, item_id, start_date_time, end_date_time, starting_price_huf, current_price_huf, status, seller_id) VALUES (30, 30, '2026-04-17T18:00:00', '2026-12-20T20:00:00', 10000, 10000, 'ACTIVE', 3);
               
               SELECT setval(
                   pg_get_serial_sequence('auctions', 'id'),
