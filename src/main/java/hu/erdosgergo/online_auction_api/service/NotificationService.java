@@ -77,4 +77,10 @@ public class NotificationService {
                 .map(notificationMapper::toResponse)
                 .toList();
     }
+
+    @Transactional
+    public void markAsReadAll() {
+        User currentUser = userService.getCurrentUser();
+        repository.markAllAsRead(currentUser.getId());
+    }
 }

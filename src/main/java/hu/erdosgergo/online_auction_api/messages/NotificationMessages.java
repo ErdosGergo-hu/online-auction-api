@@ -11,5 +11,8 @@ public final class NotificationMessages {
             "A new bid has been placed on your auction %s.";
 
     public static final String AUCTION_WON =
-            "Congratulations! You won the auction.";
+            "Congratulations! You won the auction %s.";
+
+    public static final String AUCTION_ENDED =
+            "Your auction %s has ended.";
 }

@@ -29,4 +29,9 @@ public class NotificationResource {
     public void markAsRead(@PathVariable Long id) {
         notificationService.markAsRead(id);
     }
+
+    @PutMapping("/readAll")
+    public void markAsRead() {
+        notificationService.markAsReadAll();
+    }
 }
